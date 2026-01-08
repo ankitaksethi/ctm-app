@@ -1,0 +1,5 @@
+{
+  "name": "Clinical Trial Taxonomy & Finder",
+  "description": "A sophisticated clinical trial search tool that uses the ClinicalTrials.gov API and Gemini AI to categorize and filter trials based on complex medical taxonomies.",
+  "requestFramePermissions": []
+}
