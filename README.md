@@ -1,7 +1,7 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+Clinical Trial Search App
+LLM generated clinical filters based on the conditions tag for each clinical trial provided by clinical trials . gov API and a Gemini Assistant for verifying eligibility based on the official eligibility (inclusion and exclusion) criteria
 
+<<<<<<< HEAD
 Clinical Trial Matcher
 Overview
 An intelligent clinical trial discovery platform that leverages AI to help patients find relevant clinical trials based on their medical conditions, age, and specific health profile. The system streamlines the traditionally complex process of clinical trial matching by automating data retrieval, intelligent categorization, and personalized filtering.
@@ -74,3 +74,11 @@ Interactive Elements: Smooth animations and transitions for enhanced UX
 --
 
 To deploy, update project ID and use the deploy script 
+=======
+Deployed on google cloud run https://trial-map-59509387646.us-central1.run.app
+
+To deploy it in your GCP Project,  run ./deploy.sh and replace with your Project ID and input your Gemini Key to save as a secret in GCP 
+
+
+Front end Designed with Google Studio
+>>>>>>> b6b9514543b2ef638ef750d66aa3c8771ebea55a
