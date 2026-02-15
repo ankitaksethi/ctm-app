@@ -2,19 +2,75 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
+Clinical Trial Matcher
+Overview
+An intelligent clinical trial discovery platform that leverages AI to help patients find relevant clinical trials based on their medical conditions, age, and specific health profile. The system streamlines the traditionally complex process of clinical trial matching by automating data retrieval, intelligent categorization, and personalized filtering.
+Key Features
+🔍 Smart Trial Discovery
 
-This contains everything you need to run your app locally.
+Real-time data integration with ClinicalTrials.gov API
+Automatic fetching of recruiting trials based on primary diagnosis
+Support for multiple trial statuses and filtering criteria
 
-View your app in AI Studio: https://ai.studio/apps/drive/1MhrJoRv7b-tuNUXHa-e7SSpl3txe3b5z
+🤖 AI-Powered Taxonomy
 
-## Run Locally
+Uses Google Gemini AI to automatically categorize medical conditions into structured taxonomies
+Organizes conditions into three main categories:
 
-**Prerequisites:**  Node.js
+Genetic Conditions: Chromosomal anomalies, hereditary syndromes, gene mutations
+Recent Medical Events: Acute symptoms, surgical interventions, recent diagnoses
+Other Major Diagnoses: Chronic diseases, primary malignancies, systemic conditions
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Intelligent mapping from raw condition strings to standardized medical terms
+
+🎯 Personalized Filtering
+
+Age-based filtering: Automatically filters trials based on patient age eligibility
+Condition-based matching: Multi-select checkboxes allow patients to specify their exact health conditions
+Dynamic results: Real-time trial list updates based on selected criteria
+
+📋 Comprehensive Trial Information
+Each trial card displays:
+
+Trial NCT ID and official title
+Recruitment status (color-coded badges)
+Associated medical conditions
+Study summary and detailed description
+Eligibility criteria with age ranges
+Start dates and timeline information
+AI-generated taxonomy tags for quick condition identification
+
+📞 Contact & Location Details
+Expandable trial cards reveal:
+
+Central study contacts with phone and email
+Multiple study locations with facility names and addresses
+Direct links to full protocol on ClinicalTrials.gov
+Easy-to-access communication channels for enrollment inquiries
+
+💬 Eligibility Verification
+
+Interactive chat interface for eligibility verification
+AI-powered assistant to help assess trial suitability
+Conversational approach to complex medical criteria
+
+Technical Architecture
+Backend (Python)
+
+Data Fetching: REST API integration with ClinicalTrials.gov v2 API
+Data Processing: Pandas-based data flattening and restructuring
+AI Integration: Google Gemini API for intelligent medical taxonomy
+Filtering Logic: Multi-criteria filtering engine with age and condition matching
+
+Frontend (React + TypeScript)
+
+Modern UI: Clean, accessible interface with Tailwind CSS
+Component Architecture: Modular trial cards with expandable details
+Icons: Lucide React for consistent, professional iconography
+Responsive Design: Mobile-friendly layouts with grid-based information display
+Interactive Elements: Smooth animations and transitions for enhanced UX
+
+--
+
+To deploy, update project ID and use the deploy script 

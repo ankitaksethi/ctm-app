@@ -139,7 +139,9 @@ export function useTrialSearch() {
       setTaxonomy(taxData);
       setStep("results");
     } catch (err: any) {
-      setError(err?.message || "Failed to analyze clinical data. Please try again.");
+      setError(
+        err?.message || "Failed to analyze clinical data. Please try again."
+      );
       setStep("idle");
     }
   }, []);
@@ -161,7 +163,20 @@ export function useTrialSearch() {
     );
   }, [trials, selectedTerms]);
 
-  const totalFilteredTrials = filteredTrials.length;
+  // ✅ SORT HERE (latest -> oldest) BEFORE PAGINATION
+  const sortedTrials = useMemo(() => {
+    const toMs = (d?: string | null) => {
+      if (!d) return 0;
+      const ms = new Date(d).getTime();
+      return Number.isFinite(ms) ? ms : 0;
+    };
+
+    // Sort by startDate (since TrialCard displays startDate).
+    // If you have a better field like lastUpdatePostDate, swap it in here.
+    return [...filteredTrials].sort((a, b) => toMs(b.startDate) - toMs(a.startDate));
+  }, [filteredTrials]);
+
+  const totalFilteredTrials = sortedTrials.length;
 
   const totalPages = useMemo(() => {
     return Math.max(1, Math.ceil(totalFilteredTrials / pageSize));
@@ -170,10 +185,11 @@ export function useTrialSearch() {
   // Clamp page if filters reduce total pages
   const safePage = Math.min(page, totalPages);
 
+  // ✅ paginate the sorted list
   const finalFilteredTrials = useMemo(() => {
     const start = (safePage - 1) * pageSize;
-    return filteredTrials.slice(start, start + pageSize);
-  }, [filteredTrials, safePage, pageSize]);
+    return sortedTrials.slice(start, start + pageSize);
+  }, [sortedTrials, safePage, pageSize]);
 
   return {
     // state

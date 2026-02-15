@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Loader2, ChevronRight, CheckCircle2, FlaskConical, Dna, Activity, Stethoscope, Calendar, User, MessageSquare, ExternalLink, Send, X, Bot, User as UserIcon, AlertCircle } from 'lucide-react';
+import { Search, Loader2, ChevronRight, CheckCircle2, FlaskConical, Dna, Activity, Stethoscope, Calendar, User, MessageSquare, ExternalLink, Send, X, Bot, User as UserIcon, AlertCircle, Phone, Mail, MapPin } from 'lucide-react';
 import type { FlattenedTrial } from '../types';
 
 interface TrialCardProps {
@@ -9,6 +9,22 @@ interface TrialCardProps {
 
 function TrialCard({ trial, onVerify }: TrialCardProps) {
   const [expanded, setExpanded] = useState(false);
+
+  // Helper function to parse JSON fields safely
+  const parseJsonField = (field: any) => {
+    if (!field) return null;
+    if (typeof field === 'string') {
+      try {
+        return JSON.parse(field);
+      } catch {
+        return null;
+      }
+    }
+    return field;
+  };
+
+  const centralContacts = parseJsonField(trial.centralContacts);
+  const locations = parseJsonField(trial.locations);
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all overflow-hidden group">
@@ -60,10 +76,12 @@ function TrialCard({ trial, onVerify }: TrialCardProps) {
             </button>
             <button 
               onClick={() => setExpanded(!expanded)}
-              className="text-slate-400 text-sm font-bold hover:text-slate-900 p-2 transition-colors"
+              className="text-slate-400 text-sm font-bold hover:text-slate-900 p-2 transition-colors flex items-center gap-1"
             >
-              <ChevronRight className={`w-5 h-5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
+              View Details <ChevronRight className={`w-5 h-5 transition-transform ${expanded ? 'rotate-90' : ''}`} />
             </button>
+              
+              
           </div>
         </div>
       </div>
@@ -91,12 +109,68 @@ function TrialCard({ trial, onVerify }: TrialCardProps) {
                   )}
                 </div>
               </div>
-            </div>
-            <div>
-              <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Eligibility Criteria</h4>
-              <div className="text-[10px] text-slate-600 whitespace-pre-wrap max-h-48 overflow-y-auto bg-white p-4 rounded-xl border border-slate-200 leading-relaxed font-mono">
-                {trial.eligibilityCriteria || 'Contact clinical site for criteria details.'}
+
+              {/* Contact Information */}
+              <div>
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Contact Information</h4>
+                <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-3">
+                  {centralContacts && centralContacts.length > 0 ? (
+                    centralContacts.slice(0, 2).map((contact: any, i: number) => (
+                      <div key={i} className="text-xs space-y-1">
+                        <p className="font-bold text-slate-900">{contact.name || 'Study Contact'}</p>
+                        {contact.role && <p className="text-slate-500">{contact.role}</p>}
+                        {contact.phone && (
+                          <div className="flex items-center gap-1.5 text-slate-600">
+                            <Phone className="w-3 h-3" />
+                            <span>{contact.phone}</span>
+                          </div>
+                        )}
+                        {contact.email && (
+                          <div className="flex items-center gap-1.5 text-slate-600">
+                            <Mail className="w-3 h-3" />
+                            <a href={`mailto:${contact.email}`} className="hover:text-blue-600 underline">
+                              {contact.email}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-[10px] text-slate-400 italic">Contact information available via ClinicalTrials.gov</p>
+                  )}
+                </div>
               </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Eligibility Criteria</h4>
+                <div className="text-[10px] text-slate-600 whitespace-pre-wrap max-h-48 overflow-y-auto bg-white p-4 rounded-xl border border-slate-200 leading-relaxed font-mono">
+                  {trial.eligibilityCriteria || 'Contact clinical site for criteria details.'}
+                </div>
+              </div>
+
+              {/* Study Locations */}
+              {locations && locations.length > 0 && (
+                <div>
+                  <h4 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Study Locations ({locations.length})</h4>
+                  <div className="bg-white p-4 rounded-xl border border-slate-200 space-y-2 max-h-40 overflow-y-auto">
+                    {locations.slice(0, 3).map((loc: any, i: number) => (
+                      <div key={i} className="text-xs pb-2 border-b border-slate-100 last:border-0 last:pb-0">
+                        <p className="font-bold text-slate-900">{loc.facility || 'Study Site'}</p>
+                        <div className="flex items-start gap-1.5 text-slate-500 mt-1">
+                          <MapPin className="w-3 h-3 mt-0.5 flex-shrink-0" />
+                          <span>{loc.city}{loc.state ? `, ${loc.state}` : ''}{loc.country ? `, ${loc.country}` : ''}</span>
+                        </div>
+                      </div>
+                    ))}
+                    {locations.length > 3 && (
+                      <p className="text-[10px] text-slate-400 italic pt-1">+{locations.length - 3} more locations</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <a 
                 href={`https://clinicaltrials.gov/study/${trial.nctId}`} 
                 target="_blank" 
@@ -112,7 +186,5 @@ function TrialCard({ trial, onVerify }: TrialCardProps) {
     </div>
   );
 }
-
-
 
 export default TrialCard;

@@ -124,7 +124,7 @@ Input List: {conditions_str}"""
                 # Run in thread pool to avoid blocking
                 response = await asyncio.to_thread(
                     lambda: client.models.generate_content(
-                        model="gemini-2.0-flash-exp",
+                        model="gemini-2.0-flash-001",
                         contents=prompt,
                         config=types.GenerateContentConfig(
                             response_mime_type="application/json",
@@ -205,7 +205,7 @@ Classification Rules:
 2. RecentEvents: Acute states, physical symptoms, surgical interventions, or recent medical events.
 3. OtherMajorDiagnosis: Chronic diseases, primary malignancies, and systemic long-term conditions.
 
-Constraint: EVERY term provided in the Input List must be included in the "TermMapping" object. Do not truncate the list.
+Constraint: Most terms provided in the Input List must be included in the "TermMapping" object. 
 
 Output Schema:
 {{
